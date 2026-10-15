@@ -4,11 +4,6 @@ created_at: "10/14/2026"
 created_by: "tylergarlick"
 ---
 
-<details>
-[TOC]
-</details>
-<br>
-
 # 🎯 - Record an Instance of Flow state
 
 The purpose of this feature is to capture information about when and what you were listening to when you achieved your flow state.  AI has been useful to generate the markdown files.
