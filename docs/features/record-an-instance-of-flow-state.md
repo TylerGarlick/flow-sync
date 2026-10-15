@@ -1,7 +1,10 @@
 ---
 state: "draft"
+is_ready: false
 created_at: "10/14/2026"
-created_by: "tylergarlick"
+created_by: "@TylerGarlick"
+started_at: ""
+started_by: ""
 ---
 
 # 🎯 - Record an Instance of Flow state

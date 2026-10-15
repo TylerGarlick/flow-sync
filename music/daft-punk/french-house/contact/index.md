@@ -5,7 +5,7 @@ genre: "French House / Electronic"
 genre_slug: "french-house"
 title: "Contact"
 title_slug: "contact"
-contributor: "tylergarlick"
+contributor: "@TylerGarlick""
 date_added: "2026-10-14"
 overall_flow_rating: 5
 time_to_flow_seconds: 90
@@ -34,4 +34,4 @@ key: "D Minor"
 ## 🧪 Try It Out & Community Ratings
 | User | Activity Type | Time to Flow | Flow Achieved? | Rating (1-5) | Notes |
 | :--- | :--- | :--- | :---: | :---: | :--- |
-| `@tylergarlick` | Launch Prep | ~90s | Yes | ⭐⭐⭐⭐⭐ | Incomparable energy spike. |
+| `@TylerGarlick"` | Launch Prep | ~90s | Yes | ⭐⭐⭐⭐⭐ | Incomparable energy spike. |

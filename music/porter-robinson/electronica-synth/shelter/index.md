@@ -5,7 +5,7 @@ genre: "Electronica / Synth-Pop"
 genre_slug: "electronica-synth"
 title: "Shelter"
 title_slug: "shelter"
-contributor: "tylergarlick"
+contributor: "@TylerGarlick""
 date_added: "2026-10-14"
 overall_flow_rating: 5
 time_to_flow_seconds: 45
@@ -35,4 +35,4 @@ key: "F Major"
 ## 🧪 Try It Out & Community Ratings
 | User | Activity Type | Time to Flow | Flow Achieved? | Rating (1-5) | Notes |
 | :--- | :--- | :--- | :---: | :---: | :--- |
-| `@tylergarlick` | Creative Design | ~45s | Yes | ⭐⭐⭐⭐⭐ | Amazing mood lifter for starting tasks. |
+| `@TylerGarlick"` | Creative Design | ~45s | Yes | ⭐⭐⭐⭐⭐ | Amazing mood lifter for starting tasks. |

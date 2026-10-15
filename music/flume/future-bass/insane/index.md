@@ -5,7 +5,7 @@ genre: "Future Bass / Electronic"
 genre_slug: "future-bass"
 title: "Insane (feat. Moon Holiday)"
 title_slug: "insane"
-contributor: "tylergarlick"
+contributor: "@TylerGarlick""
 date_added: "2026-10-14"
 overall_flow_rating: 4
 time_to_flow_seconds: 50
@@ -34,4 +34,4 @@ key: "E Minor"
 ## 🧪 Try It Out & Community Ratings
 | User | Activity Type | Time to Flow | Flow Achieved? | Rating (1-5) | Notes |
 | :--- | :--- | :--- | :---: | :---: | :--- |
-| `@tylergarlick` | UI/UX Design | ~50s | Yes | ⭐⭐⭐⭐☆ | Unique textures keep the brain awake. |
+| `@TylerGarlick"` | UI/UX Design | ~50s | Yes | ⭐⭐⭐⭐☆ | Unique textures keep the brain awake. |

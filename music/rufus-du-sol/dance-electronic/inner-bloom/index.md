@@ -5,7 +5,7 @@ genre: "Alternative Dance / Electronic"
 genre_slug: "dance-electronic"
 title: "Innerbloom"
 title_slug: "inner-bloom"
-contributor: "tylergarlick"
+contributor: "@TylerGarlick""
 date_added: "2026-10-14"
 overall_flow_rating: 5
 time_to_flow_seconds: 120
@@ -35,4 +35,4 @@ key: "A Minor"
 ## 🧪 Try It Out & Community Ratings
 | User | Activity Type | Time to Flow | Flow Achieved? | Rating (1-5) | Notes |
 | :--- | :--- | :--- | :---: | :---: | :--- |
-| `@tylergarlick` | Deep Coding | ~2 mins | Yes | ⭐⭐⭐⭐⭐ | Masterpiece for multi-hour focus sessions. |
+| `@TylerGarlick"` | Deep Coding | ~2 mins | Yes | ⭐⭐⭐⭐⭐ | Masterpiece for multi-hour focus sessions. |

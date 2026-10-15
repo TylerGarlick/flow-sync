@@ -5,7 +5,7 @@ genre: "Synthwave / Electro House"
 genre_slug: "synthwave-electro"
 title: "Nightcall"
 title_slug: "nightcall"
-contributor: "tylergarlick"
+contributor: "@TylerGarlick""
 date_added: "2026-10-14"
 overall_flow_rating: 5
 time_to_flow_seconds: 45
@@ -35,4 +35,4 @@ key: "A Minor"
 ## 🧪 Try It Out & Community Ratings
 | User | Activity Type | Time to Flow | Flow Achieved? | Rating (1-5) | Notes |
 | :--- | :--- | :--- | :---: | :---: | :--- |
-| `@tylergarlick` | Late Night Coding | ~45s | Yes | ⭐⭐⭐⭐⭐ | Unbeatable synthwave mood. |
+| `@TylerGarlick"` | Late Night Coding | ~45s | Yes | ⭐⭐⭐⭐⭐ | Unbeatable synthwave mood. |

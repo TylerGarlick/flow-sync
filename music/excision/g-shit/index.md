@@ -5,7 +5,7 @@ genre: "Dubstep / Brostep"
 genre_slug: "dubstep-brostep"
 title: "G Shit (feat. Sam King)"
 title_slug: "g-shit"
-contributor: "tylergarlick"
+contributor: "@TylerGarlick""
 date_added: "2026-10-14"
 overall_flow_rating: 5
 time_to_flow_seconds: 55
@@ -53,7 +53,7 @@ Test this track during your next high-intensity work session and leave your feed
 
 | User | Activity Type | Time to Flow | Flow Achieved? | Rating (1-5) | Notes |
 | :--- | :--- | :--- | :---: | :---: | :--- |
-| `@tylergarlick` | Debugging & Complex Refactoring | ~55s | Yes | ⭐⭐⭐⭐⭐ | The drop at 00:55 instantly locked me in. Essential track for heavy crunch work. |
+| `@TylerGarlick"` | Debugging & Complex Refactoring | ~55s | Yes | ⭐⭐⭐⭐⭐ | The drop at 00:55 instantly locked me in. Essential track for heavy crunch work. |
 
 *(To add your review, fork the repo and submit a Pull Request adding your experience to this table!)*
 ```eof

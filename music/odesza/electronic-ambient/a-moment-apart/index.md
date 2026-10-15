@@ -5,7 +5,7 @@ genre: "Electronic / Ambient"
 genre_slug: "electronic-ambient"
 title: "A Moment Apart"
 title_slug: "a-moment-apart"
-contributor: "tylergarlick"
+contributor: "@TylerGarlick""
 date_added: "2026-10-14"
 overall_flow_rating: 5
 time_to_flow_seconds: 30
@@ -34,4 +34,4 @@ key: "A Minor"
 ## 🧪 Try It Out & Community Ratings
 | User | Activity Type | Time to Flow | Flow Achieved? | Rating (1-5) | Notes |
 | :--- | :--- | :--- | :---: | :---: | :--- |
-| `@tylergarlick` | Planning | ~30s | Yes | ⭐⭐⭐⭐⭐ | Elite opening track for any work session. |
+| `@TylerGarlick"` | Planning | ~30s | Yes | ⭐⭐⭐⭐⭐ | Elite opening track for any work session. |

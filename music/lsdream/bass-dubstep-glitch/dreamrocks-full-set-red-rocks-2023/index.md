@@ -5,7 +5,7 @@ genre: "Bass / Dubstep / Glitch Hop"
 genre_slug: "bass-dubstep-glitch"
 title: "DREAMROCKS Full Set @ Red Rocks 2023"
 title_slug: "dreamrocks-full-set-red-rocks-2023"
-contributor: "tylergarlick"
+contributor: "@TylerGarlick""
 date_added: "2026-10-14"
 overall_flow_rating: 5
 time_to_flow_seconds: 30
@@ -40,4 +40,4 @@ key: "Various"
 ## 🧪 Try It Out & Community Ratings
 | User | Activity Type | Time to Flow | Flow Achieved? | Rating (1-5) | Notes |
 | :--- | :--- | :--- | :---: | :---: | :--- |
-| `@tylergarlick` | Software Architecture | ~30s | Yes | ⭐⭐⭐⭐⭐ | Perfect continuous mix. Almost two hours without track changes kept me locked in. |
+| `@TylerGarlick"` | Software Architecture | ~30s | Yes | ⭐⭐⭐⭐⭐ | Perfect continuous mix. Almost two hours without track changes kept me locked in. |

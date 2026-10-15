@@ -5,7 +5,7 @@ genre: "Future Bass / Electronic"
 genre_slug: "future-bass"
 title: "Light"
 title_slug: "light"
-contributor: "tylergarlick"
+contributor: "@TylerGarlick""
 date_added: "2026-10-14"
 overall_flow_rating: 4
 time_to_flow_seconds: 40
@@ -34,4 +34,4 @@ key: "C Major"
 ## 🧪 Try It Out & Community Ratings
 | User | Activity Type | Time to Flow | Flow Achieved? | Rating (1-5) | Notes |
 | :--- | :--- | :--- | :---: | :---: | :--- |
-| `@tylergarlick` | Brainstorming | ~40s | Yes | ⭐⭐⭐⭐☆ | Instant mood booster for work. |
+| `@TylerGarlick"` | Brainstorming | ~40s | Yes | ⭐⭐⭐⭐☆ | Instant mood booster for work. |

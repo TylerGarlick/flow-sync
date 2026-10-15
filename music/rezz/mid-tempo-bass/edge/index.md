@@ -5,7 +5,7 @@ genre: "Midtempo Bass / Industrial"
 genre_slug: "mid-tempo-bass"
 title: "Edge"
 title_slug: "edge"
-contributor: "tylergarlick"
+contributor: "@TylerGarlick""
 date_added: "2026-10-14"
 overall_flow_rating: 5
 time_to_flow_seconds: 40
@@ -34,4 +34,4 @@ key: "C Minor"
 ## 🧪 Try It Out & Community Ratings
 | User | Activity Type | Time to Flow | Flow Achieved? | Rating (1-5) | Notes |
 | :--- | :--- | :--- | :---: | :---: | :--- |
-| `@tylergarlick` | Debugging | ~40s | Yes | ⭐⭐⭐⭐⭐ | Hypnotic and relentless focus. |
+| `@TylerGarlick"` | Debugging | ~40s | Yes | ⭐⭐⭐⭐⭐ | Hypnotic and relentless focus. |

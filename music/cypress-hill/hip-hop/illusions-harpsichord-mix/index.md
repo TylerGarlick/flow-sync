@@ -5,7 +5,7 @@ genre: "Hip-Hop / Instrumental Rap"
 genre_slug: "hip-hop"
 title: "Illusions (Harpsichord Mix)"
 title_slug: "illusions-harpsichord-mix"
-contributor: "tylergarlick"
+contributor: "@TylerGarlick""
 date_added: "2026-10-14"
 overall_flow_rating: 4
 time_to_flow_seconds: 35
@@ -34,4 +34,4 @@ key: "G Minor"
 ## 🧪 Try It Out & Community Ratings
 | User | Activity Type | Time to Flow | Flow Achieved? | Rating (1-5) | Notes |
 | :--- | :--- | :--- | :---: | :---: | :--- |
-| `@tylergarlick` | Content Editing | ~35s | Yes | ⭐⭐⭐⭐☆ | Great rhythmic bounce for writing. |
+| `@TylerGarlick"` | Content Editing | ~35s | Yes | ⭐⭐⭐⭐☆ | Great rhythmic bounce for writing. |

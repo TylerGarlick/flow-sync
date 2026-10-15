@@ -5,7 +5,7 @@ genre: "Melodic Dubstep / Electronic"
 genre_slug: "dubstep-melodic"
 title: "Init"
 title_slug: "init"
-contributor: "tylergarlick"
+contributor: "@TylerGarlick""
 date_added: "2026-10-14"
 overall_flow_rating: 5
 time_to_flow_seconds: 60
@@ -34,4 +34,4 @@ key: "F# Minor"
 ## 🧪 Try It Out & Community Ratings
 | User | Activity Type | Time to Flow | Flow Achieved? | Rating (1-5) | Notes |
 | :--- | :--- | :--- | :---: | :---: | :--- |
-| `@tylergarlick` | Coding Sprint | ~60s | Yes | ⭐⭐⭐⭐⭐ | Great for fast-paced problem solving. |
+| `@TylerGarlick"` | Coding Sprint | ~60s | Yes | ⭐⭐⭐⭐⭐ | Great for fast-paced problem solving. |

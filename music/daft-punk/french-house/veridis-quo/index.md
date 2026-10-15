@@ -5,7 +5,7 @@ genre: "French House"
 genre_slug: "french-house"
 title: "Veridis Quo"
 title_slug: "veridis-quo"
-contributor: "tylergarlick"
+contributor: "@TylerGarlick""
 date_added: "2026-10-14"
 overall_flow_rating: 5
 time_to_flow_seconds: 25
@@ -34,4 +34,4 @@ key: "A Minor"
 ## 🧪 Try It Out & Community Ratings
 | User | Activity Type | Time to Flow | Flow Achieved? | Rating (1-5) | Notes |
 | :--- | :--- | :--- | :---: | :---: | :--- |
-| `tylergarlick` | Research & Writing | ~25s | Yes | ⭐⭐⭐⭐⭐ | Hypnotic loop makes time fly. |
+| `@TylerGarlick"` | Research & Writing | ~25s | Yes | ⭐⭐⭐⭐⭐ | Hypnotic loop makes time fly. |
