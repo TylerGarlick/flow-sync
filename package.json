@@ -8,8 +8,11 @@
     "build": "npm run codegen && tsc -p tsconfig.json",
     "typecheck": "npm run codegen -- --check && tsc --noEmit -p tsconfig.json",
     "start": "node dist/server.js",
-    "test:e2e": "npm run build && node --test tests/e2e/*.test.js",
-    "test": "npm run test:e2e"
+    "generate:song": "bun run scripts/src/cli.ts",
+    "test:unit": "bun test scripts/src",
+    "test:e2e:generator": "bun test scripts/e2e",
+    "test:e2e": "npm run build && node --test tests/e2e/*.test.js && bun run test:e2e:generator",
+    "test": "npm run test:unit && npm run test:e2e"
   },
   "dependencies": {
     "graphql": "^16.11.0",

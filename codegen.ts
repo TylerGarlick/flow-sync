@@ -8,8 +8,6 @@ const config: CodegenConfig = {
       plugins: [
         "typescript",
         "typescript-resolvers",
-        "typescript-operations",
-        "typed-document-node",
       ],
       config: {
         enumsAsTypes: true,
@@ -18,6 +16,16 @@ const config: CodegenConfig = {
           Song: "../catalog.js#CatalogSong",
           Report: "../catalog.js#CatalogReport",
         },
+      },
+    },
+    "src/generated/operations.ts": {
+      plugins: [
+        "typescript-operations",
+        "typed-document-node",
+      ],
+      config: {
+        enumsAsTypes: true,
+        useTypeImports: true,
       },
     },
   },

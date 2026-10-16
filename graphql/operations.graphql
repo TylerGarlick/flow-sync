@@ -51,3 +51,36 @@ query SongDetail($slug: ID!) {
     }
   }
 }
+
+query SongMetadataLookup($input: MetadataLookupInput!) {
+  metadataLookup(input: $input) {
+    warnings
+    candidates {
+      title
+      artist
+      source
+      links {
+        label
+        url
+      }
+    }
+  }
+}
+
+query SongEntryPreview($input: SongEntryInput!) {
+  songEntryPreview(input: $input) {
+    path
+    markdown
+    catalogMarkdown
+    catalogChanged
+    alreadyExists
+  }
+}
+
+mutation GenerateSongEntry($input: SongEntryInput!, $confirm: Boolean!) {
+  generateSongEntry(input: $input, confirm: $confirm) {
+    path
+    created
+    catalogUpdated
+  }
+}

@@ -7,6 +7,9 @@ services:
     environment:
       NODE_ENV: production
       PORT: 4000
+      SONG_ENTRY_WRITE_TOKEN: ${SONG_ENTRY_WRITE_TOKEN:-}
+    volumes:
+      - music-data:/app/music
     restart: unless-stopped
     healthcheck:
       test:
@@ -18,3 +21,6 @@ services:
       timeout: 3s
       start_period: 10s
       retries: 3
+
+volumes:
+  music-data:

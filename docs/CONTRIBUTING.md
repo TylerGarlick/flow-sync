@@ -30,9 +30,12 @@ To keep the repository searchable and structured:
    ```bash
    git checkout -b add-song/artist-title
    ```
-4. **Create Your Directory & File:**
-   * Path: `music/{artist-slug}/{genre-slug}/{song-title-slug}/{username}.md`
-   * Copy the layout from `docs/TEMPLATE.md`.
+4. **Generate Your Entry:** From the repository root, run `bun run generate:song`. Provide a MusicBrainz recording URL, Apple Music song URL, or song title and artist. Review metadata candidates, choose a curated genre, and enter your own listening-session details when prompted. The generator previews both changes and writes only after confirmation.
+   * Use `bun run generate:song -- --dry-run` to preview without writing.
+   * Generated entry path: `music/{artist-slug}/{genre-slug}/{song-title-slug}/index.md`.
+   * The generator updates `music/index.md` and never overwrites an existing song entry.
+   * Do not use external metadata to invent your flow rating, time-to-flow, whether flow was achieved, work context, environment, description, or trigger timestamps.
+   * The GraphQL preview and generation workflow is documented in [`docs/song-entry-generator.md`](song-entry-generator.md); its write mutation is disabled unless an administrator configures the private `SONG_ENTRY_WRITE_TOKEN`.
 5. **Commit and Push:**
    ```bash
    git add .

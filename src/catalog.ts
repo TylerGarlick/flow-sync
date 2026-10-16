@@ -1,8 +1,9 @@
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import { parse as parseYaml } from "yaml";
-
-const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+import { isSlug } from "./song-entry/slug.js";
+import { parseSongEntryFrontmatter } from "./song-entry/validation.js";
+import type { SongEntryFrontmatter } from "./song-entry/types.js";
 
 export interface CatalogReport {
   id: string;
@@ -55,112 +56,11 @@ export interface Catalog {
   reports: Map<string, CatalogReport>;
 }
 
-interface Frontmatter {
-  artist: string;
-  artist_slug: string;
-  genre: string;
-  genre_slug: string;
-  title: string;
-  title_slug: string;
-  contributor: string;
-  date_added: string;
-  overall_flow_rating: number;
-  time_to_flow_seconds: number;
-  bpm?: string;
-  key?: string;
-}
-
 interface ParsedFile {
   songId: string;
   filename: string;
-  metadata: Frontmatter;
+  metadata: SongEntryFrontmatter;
   markdown: string;
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null && !Array.isArray(value);
-}
-
-function readRequiredString(
-  data: Record<string, unknown>,
-  field: string,
-): string | undefined {
-  const value = data[field];
-  return typeof value === "string" && value.trim() !== "" ? value.trim() : undefined;
-}
-
-function readInteger(
-  data: Record<string, unknown>,
-  field: string,
-  minimum: number,
-  maximum: number,
-): number | undefined {
-  const value = data[field];
-  return typeof value === "number" &&
-    Number.isInteger(value) &&
-    value >= minimum &&
-    value <= maximum
-    ? value
-    : undefined;
-}
-
-function parseMetadata(data: unknown): Frontmatter | undefined {
-  if (!isRecord(data)) return undefined;
-
-  const artist = readRequiredString(data, "artist");
-  const artistSlug = readRequiredString(data, "artist_slug");
-  const genre = readRequiredString(data, "genre");
-  const genreSlug = readRequiredString(data, "genre_slug");
-  const title = readRequiredString(data, "title");
-  const titleSlug = readRequiredString(data, "title_slug");
-  const contributor = readRequiredString(data, "contributor");
-  const dateAdded = readRequiredString(data, "date_added");
-  const rating = readInteger(data, "overall_flow_rating", 1, 5);
-  const timeToFlow = readInteger(data, "time_to_flow_seconds", 0, 86_400);
-  const bpm =
-    typeof data.bpm === "number" && Number.isInteger(data.bpm) && data.bpm >= 1 && data.bpm <= 400
-      ? String(data.bpm)
-      : typeof data.bpm === "string" && /^\d{1,3}(?:-\d{1,3})?$/.test(data.bpm)
-        ? data.bpm
-        : undefined;
-  const key = data.key === undefined ? undefined : readRequiredString(data, "key");
-
-  if (
-    !artist ||
-    !artistSlug ||
-    !genre ||
-    !genreSlug ||
-    !title ||
-    !titleSlug ||
-    !contributor ||
-    !dateAdded ||
-    !rating ||
-    timeToFlow === undefined ||
-    !/^\d{4}-\d{2}-\d{2}$/.test(dateAdded) ||
-    !artistSlug.match(slugPattern) ||
-    !genreSlug.match(slugPattern) ||
-    !titleSlug.match(slugPattern) ||
-    (data.bpm !== undefined && bpm === undefined) ||
-    (data.key !== undefined && key === undefined)
-  ) {
-    return undefined;
-  }
-
-  const metadata: Frontmatter = {
-    artist,
-    artist_slug: artistSlug,
-    genre,
-    genre_slug: genreSlug,
-    title,
-    title_slug: titleSlug,
-    contributor,
-    date_added: dateAdded,
-    overall_flow_rating: rating,
-    time_to_flow_seconds: timeToFlow,
-  };
-  if (bpm !== undefined) metadata.bpm = bpm;
-  if (key !== undefined) metadata.key = key;
-  return metadata;
 }
 
 function extractDescription(markdown: string): string {
@@ -233,7 +133,7 @@ export async function loadCatalog(catalogDirectory: string): Promise<Catalog> {
     const legacyPath = segments.length === 3;
     if (
       (!canonicalPath && !legacyPath) ||
-      !segments.slice(0, -1).every((segment) => slugPattern.test(segment)) ||
+      !segments.slice(0, -1).every(isSlug) ||
       !segments.at(-1)?.endsWith(".md")
     ) {
       console.warn(`Skipping catalog file with an unexpected path: ${relative}`);
@@ -244,7 +144,7 @@ export async function loadCatalog(catalogDirectory: string): Promise<Catalog> {
       const source = await readFile(file, "utf8");
       const frontmatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
       if (!frontmatter) throw new Error("Missing YAML frontmatter block");
-      const metadata = parseMetadata(parseYaml(frontmatter[1] ?? ""));
+      const metadata = parseSongEntryFrontmatter(parseYaml(frontmatter[1] ?? ""));
       const [pathArtistSlug, pathGenreOrTitleSlug, pathTitleOrFilename, pathFilename] = segments;
       const artistSlug = pathArtistSlug;
       const genreSlug = canonicalPath ? pathGenreOrTitleSlug : metadata?.genre_slug;

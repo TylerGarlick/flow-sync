@@ -28,8 +28,9 @@ The catalog is currently navigated through repository directories and a manually
 - Use **Next.js** for the frontend, with typed GraphQL operations shared between the client and API.
 - Generate TypeScript types from the GraphQL schema and operations (for example, GraphQL Code Generator), and fail CI when generated types are stale.
 - Parse the existing `music/**/index.md` YAML frontmatter and Markdown body into a validated catalog model. Treat the Markdown repository as the source of truth rather than maintaining a duplicate database initially.
-- Define read-only queries for catalog facets, paginated/searchable songs, song details, and reports. Keep URL and path resolution internal; never accept arbitrary file paths from GraphQL callers.
-- Cache parsed catalog data and rebuild or invalidate it when repository content changes. Mutations and authenticated contribution workflows can be considered separately after the read-only site is established.
+- Define queries for catalog facets, paginated/searchable songs, song details, reports, metadata lookup, and song-entry preview. Keep URL and path resolution internal; never accept arbitrary file paths from GraphQL callers.
+- Cache parsed catalog data and rebuild or invalidate it when repository content changes.
+- The song-entry generation mutation is opt-in, requires an explicit confirmation flag and a private bearer token, and never overwrites existing entries. Broader authenticated contribution workflows remain out of scope.
 
 ## Risks and guardrails
 
