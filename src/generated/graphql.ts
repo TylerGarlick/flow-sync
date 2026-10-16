@@ -1,10 +1,5 @@
-/** Internal type. DO NOT USE DIRECTLY. */
-type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-/** Internal type. DO NOT USE DIRECTLY. */
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 import type { GraphQLResolveInfo } from 'graphql';
 import type { CatalogSong, CatalogReport } from '../catalog.js';
-import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
@@ -38,12 +33,55 @@ export type FlowTrigger = {
   title: Scalars['String']['output'];
 };
 
+export type MetadataCandidate = {
+  __typename?: 'MetadataCandidate';
+  artist: Scalars['String']['output'];
+  links: Array<SongLink>;
+  source: MetadataSource;
+  title: Scalars['String']['output'];
+};
+
+export type MetadataLookupInput = {
+  artist?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  url?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type MetadataLookupResult = {
+  __typename?: 'MetadataLookupResult';
+  candidates: Array<MetadataCandidate>;
+  warnings: Array<Scalars['String']['output']>;
+};
+
+export type MetadataSource =
+  | 'APPLE_MUSIC'
+  | 'MANUAL'
+  | 'MUSICBRAINZ';
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  generateSongEntry: SongEntryGenerationResult;
+};
+
+
+export type MutationGenerateSongEntryArgs = {
+  confirm: Scalars['Boolean']['input'];
+  input: SongEntryInput;
+};
+
 export type Query = {
   __typename?: 'Query';
   catalog: CatalogFacets;
+  metadataLookup: MetadataLookupResult;
   report?: Maybe<Report>;
   song?: Maybe<Song>;
+  songEntryPreview: SongEntryPreview;
   songs: SongPage;
+};
+
+
+export type QueryMetadataLookupArgs = {
+  input: MetadataLookupInput;
 };
 
 
@@ -54,6 +92,11 @@ export type QueryReportArgs = {
 
 export type QuerySongArgs = {
   slug: Scalars['ID']['input'];
+};
+
+
+export type QuerySongEntryPreviewArgs = {
+  input: SongEntryInput;
 };
 
 
@@ -98,10 +141,57 @@ export type Song = {
   triggers: Array<FlowTrigger>;
 };
 
+export type SongEntryDetailsInput = {
+  contributor: Scalars['String']['input'];
+  dateAdded?: InputMaybe<Scalars['String']['input']>;
+  description: Scalars['String']['input'];
+  environment: Scalars['String']['input'];
+  flowAchieved: Scalars['Boolean']['input'];
+  flowRating: Scalars['Int']['input'];
+  genre: Scalars['String']['input'];
+  genreSlug?: InputMaybe<Scalars['String']['input']>;
+  timeToFlowSeconds: Scalars['Int']['input'];
+  triggerPoints: Array<Scalars['String']['input']>;
+  workContext: Scalars['String']['input'];
+};
+
+export type SongEntryGenerationResult = {
+  __typename?: 'SongEntryGenerationResult';
+  catalogUpdated: Scalars['Boolean']['output'];
+  created: Scalars['Boolean']['output'];
+  path: Scalars['String']['output'];
+};
+
+export type SongEntryInput = {
+  details: SongEntryDetailsInput;
+  metadata: SongMetadataInput;
+};
+
+export type SongEntryPreview = {
+  __typename?: 'SongEntryPreview';
+  alreadyExists: Scalars['Boolean']['output'];
+  catalogChanged: Scalars['Boolean']['output'];
+  catalogMarkdown: Scalars['String']['output'];
+  markdown: Scalars['String']['output'];
+  path: Scalars['String']['output'];
+};
+
 export type SongLink = {
   __typename?: 'SongLink';
   label: Scalars['String']['output'];
   url: Scalars['String']['output'];
+};
+
+export type SongLinkInput = {
+  label: Scalars['String']['input'];
+  url: Scalars['String']['input'];
+};
+
+export type SongMetadataInput = {
+  artist: Scalars['String']['input'];
+  links: Array<SongLinkInput>;
+  source: MetadataSource;
+  title: Scalars['String']['input'];
 };
 
 export type SongPage = {
@@ -190,10 +280,21 @@ export type ResolversTypes = {
   FlowTrigger: ResolverTypeWrapper<FlowTrigger>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  MetadataCandidate: ResolverTypeWrapper<MetadataCandidate>;
+  MetadataLookupInput: MetadataLookupInput;
+  MetadataLookupResult: ResolverTypeWrapper<MetadataLookupResult>;
+  MetadataSource: MetadataSource;
+  Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>;
   Query: ResolverTypeWrapper<Record<PropertyKey, never>>;
   Report: ResolverTypeWrapper<CatalogReport>;
   Song: ResolverTypeWrapper<CatalogSong>;
+  SongEntryDetailsInput: SongEntryDetailsInput;
+  SongEntryGenerationResult: ResolverTypeWrapper<SongEntryGenerationResult>;
+  SongEntryInput: SongEntryInput;
+  SongEntryPreview: ResolverTypeWrapper<SongEntryPreview>;
   SongLink: ResolverTypeWrapper<SongLink>;
+  SongLinkInput: SongLinkInput;
+  SongMetadataInput: SongMetadataInput;
   SongPage: ResolverTypeWrapper<Omit<SongPage, 'songs'> & { songs: Array<ResolversTypes['Song']> }>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
 };
@@ -206,10 +307,20 @@ export type ResolversParentTypes = {
   FlowTrigger: FlowTrigger;
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
+  MetadataCandidate: MetadataCandidate;
+  MetadataLookupInput: MetadataLookupInput;
+  MetadataLookupResult: MetadataLookupResult;
+  Mutation: Record<PropertyKey, never>;
   Query: Record<PropertyKey, never>;
   Report: CatalogReport;
   Song: CatalogSong;
+  SongEntryDetailsInput: SongEntryDetailsInput;
+  SongEntryGenerationResult: SongEntryGenerationResult;
+  SongEntryInput: SongEntryInput;
+  SongEntryPreview: SongEntryPreview;
   SongLink: SongLink;
+  SongLinkInput: SongLinkInput;
+  SongMetadataInput: SongMetadataInput;
   SongPage: Omit<SongPage, 'songs'> & { songs: Array<ResolversParentTypes['Song']> };
   String: Scalars['String']['output'];
 };
@@ -231,10 +342,28 @@ export type FlowTriggerResolvers<ContextType = any, ParentType extends Resolvers
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };
 
+export type MetadataCandidateResolvers<ContextType = any, ParentType extends ResolversParentTypes['MetadataCandidate'] = ResolversParentTypes['MetadataCandidate']> = {
+  artist?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  links?: Resolver<Array<ResolversTypes['SongLink']>, ParentType, ContextType>;
+  source?: Resolver<ResolversTypes['MetadataSource'], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+};
+
+export type MetadataLookupResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['MetadataLookupResult'] = ResolversParentTypes['MetadataLookupResult']> = {
+  candidates?: Resolver<Array<ResolversTypes['MetadataCandidate']>, ParentType, ContextType>;
+  warnings?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+};
+
+export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  generateSongEntry?: Resolver<ResolversTypes['SongEntryGenerationResult'], ParentType, ContextType, RequireFields<MutationGenerateSongEntryArgs, 'confirm' | 'input'>>;
+};
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   catalog?: Resolver<ResolversTypes['CatalogFacets'], ParentType, ContextType>;
+  metadataLookup?: Resolver<ResolversTypes['MetadataLookupResult'], ParentType, ContextType, RequireFields<QueryMetadataLookupArgs, 'input'>>;
   report?: Resolver<Maybe<ResolversTypes['Report']>, ParentType, ContextType, RequireFields<QueryReportArgs, 'slug'>>;
   song?: Resolver<Maybe<ResolversTypes['Song']>, ParentType, ContextType, RequireFields<QuerySongArgs, 'slug'>>;
+  songEntryPreview?: Resolver<ResolversTypes['SongEntryPreview'], ParentType, ContextType, RequireFields<QuerySongEntryPreviewArgs, 'input'>>;
   songs?: Resolver<ResolversTypes['SongPage'], ParentType, ContextType, RequireFields<QuerySongsArgs, 'limit' | 'offset'>>;
 };
 
@@ -269,6 +398,20 @@ export type SongResolvers<ContextType = any, ParentType extends ResolversParentT
   triggers?: Resolver<Array<ResolversTypes['FlowTrigger']>, ParentType, ContextType>;
 };
 
+export type SongEntryGenerationResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['SongEntryGenerationResult'] = ResolversParentTypes['SongEntryGenerationResult']> = {
+  catalogUpdated?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  created?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+};
+
+export type SongEntryPreviewResolvers<ContextType = any, ParentType extends ResolversParentTypes['SongEntryPreview'] = ResolversParentTypes['SongEntryPreview']> = {
+  alreadyExists?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  catalogChanged?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  catalogMarkdown?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  markdown?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  path?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+};
+
 export type SongLinkResolvers<ContextType = any, ParentType extends ResolversParentTypes['SongLink'] = ResolversParentTypes['SongLink']> = {
   label?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   url?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -284,38 +427,15 @@ export type Resolvers<ContextType = any> = {
   CatalogFacet?: CatalogFacetResolvers<ContextType>;
   CatalogFacets?: CatalogFacetsResolvers<ContextType>;
   FlowTrigger?: FlowTriggerResolvers<ContextType>;
+  MetadataCandidate?: MetadataCandidateResolvers<ContextType>;
+  MetadataLookupResult?: MetadataLookupResultResolvers<ContextType>;
+  Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Report?: ReportResolvers<ContextType>;
   Song?: SongResolvers<ContextType>;
+  SongEntryGenerationResult?: SongEntryGenerationResultResolvers<ContextType>;
+  SongEntryPreview?: SongEntryPreviewResolvers<ContextType>;
   SongLink?: SongLinkResolvers<ContextType>;
   SongPage?: SongPageResolvers<ContextType>;
 };
 
-
-export type CatalogQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CatalogQuery = { catalog: { artists: Array<{ name: string, slug: string, songCount: number }>, genres: Array<{ name: string, slug: string, songCount: number }> } };
-
-export type SongsQueryVariables = Exact<{
-  search?: string | null | undefined;
-  artist?: string | null | undefined;
-  genre?: string | null | undefined;
-  limit?: number | null | undefined;
-  offset?: number | null | undefined;
-}>;
-
-
-export type SongsQuery = { songs: { totalCount: number, hasNextPage: boolean, songs: Array<{ id: string, title: string, artist: string, genre: string, overallFlowRating: number, timeToFlowSeconds: number }> } };
-
-export type SongDetailQueryVariables = Exact<{
-  slug: string | number;
-}>;
-
-
-export type SongDetailQuery = { song: { id: string, title: string, artist: string, description: string, links: Array<{ label: string, url: string }>, triggers: Array<{ timestamp: string, title: string, description: string }>, reports: Array<{ id: string, contributor: string, overallFlowRating: number, timeToFlowSeconds: number }> } | null };
-
-
-export const CatalogDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Catalog"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"catalog"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"artists"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"songCount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"genres"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"slug"}},{"kind":"Field","name":{"kind":"Name","value":"songCount"}}]}}]}}]}}]} as unknown as DocumentNode<CatalogQuery, CatalogQueryVariables>;
-export const SongsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Songs"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"search"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"artist"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"genre"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"songs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"search"},"value":{"kind":"Variable","name":{"kind":"Name","value":"search"}}},{"kind":"Argument","name":{"kind":"Name","value":"artist"},"value":{"kind":"Variable","name":{"kind":"Name","value":"artist"}}},{"kind":"Argument","name":{"kind":"Name","value":"genre"},"value":{"kind":"Variable","name":{"kind":"Name","value":"genre"}}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"totalCount"}},{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"songs"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"artist"}},{"kind":"Field","name":{"kind":"Name","value":"genre"}},{"kind":"Field","name":{"kind":"Name","value":"overallFlowRating"}},{"kind":"Field","name":{"kind":"Name","value":"timeToFlowSeconds"}}]}}]}}]}}]} as unknown as DocumentNode<SongsQuery, SongsQueryVariables>;
-export const SongDetailDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"SongDetail"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"slug"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"song"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"slug"},"value":{"kind":"Variable","name":{"kind":"Name","value":"slug"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"artist"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"links"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}},{"kind":"Field","name":{"kind":"Name","value":"triggers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"timestamp"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"description"}}]}},{"kind":"Field","name":{"kind":"Name","value":"reports"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"contributor"}},{"kind":"Field","name":{"kind":"Name","value":"overallFlowRating"}},{"kind":"Field","name":{"kind":"Name","value":"timeToFlowSeconds"}}]}}]}}]}}]} as unknown as DocumentNode<SongDetailQuery, SongDetailQueryVariables>;

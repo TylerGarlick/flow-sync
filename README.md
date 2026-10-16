@@ -42,11 +42,11 @@ music/
 └── {artist-slug}/
     └── {genre-slug}/
         └── {song-title-slug}/
-            ├── index.md           # Song overview & aggregated stats (optional)
-            └── {username}.md      # Individual focus report
+            ├── index.md           # Song entry and community ratings
+            └── {username}.md      # Optional individual focus report
 ```
 
-*Example Path:* `music/tycho/ambient-downtempo/a-walk/johndoe.md`
+*Generated entry example:* `music/tycho/ambient-downtempo/a-walk/index.md`
 
 ---
 
@@ -71,12 +71,19 @@ We love contributions! FlowSync follows a standard GitHub fork-and-pull-request 
 
 ### Quick Start: Adding Your Song
 
-1. **Fork** this repository to your account.
-2. **Create a branch** for your addition (`git checkout -b add/artist-song-username`).
-3. **Copy the Template** found in [`docs/TEMPLATE.md`](docs/TEMPLATE.md).
-4. **Add your file** under `music/{artist-slug}/{genre-slug}/{song-title-slug}/{your-username}.md`.
-5. **Commit & Push** your changes.
-6. **Open a Pull Request (PR)** against our `main` branch.
+Use the Bun generator to create the song entry and add it to the catalog:
+
+```bash
+bun run generate:song
+```
+
+The guided prompts let you review candidate metadata and provide the curated genre and your own listening-session details. The generator previews the entry and catalog change before writing. Use `--dry-run` to preview without changing files, or pass `--help` for URL and option details.
+
+The generator accepts MusicBrainz recording pages and Apple Music song links, or a title and artist for metadata lookup. Flow rating, time-to-flow, whether flow was achieved, work context, environment, description, and trigger timestamps are entered by the contributor, never inferred from metadata. MusicBrainz is intended for non-commercial use and requires a descriptive User-Agent; check its terms before commercial use.
+
+The GraphQL API uses the same metadata lookup, validation, slugging, template, preview, and file-write modules. It exposes metadata lookup and preview queries; generation mutations are disabled unless a long bearer token is configured. See the [Song Entry Generator guide](docs/song-entry-generator.md) for CLI and GraphQL workflows.
+
+Run all GraphQL and Bun tests with `npm test` (requires Node.js 22+ and Bun). The focused Bun unit suite is `npm run test:unit`; CLI end-to-end tests are `npm run test:e2e:generator`.
 
 For detailed guidelines on file formatting, slug naming conventions, and review steps, please read our full [**Contributing Guidelines**](docs/CONTRIBUTING.md).
 
@@ -100,7 +107,7 @@ Using community metrics (`time_to_flow_seconds` and overall ratings), we regular
 
 ### GraphQL API
 
-The read-only GraphQL API serves the Markdown catalog. Start it locally with Docker Compose:
+The GraphQL API serves the Markdown catalog and supports optional, token-protected song generation. Start it locally with Docker Compose:
 
 ```bash
 docker compose up --build

@@ -1,4 +1,5 @@
 import { readFile } from "node:fs/promises";
+import { timingSafeEqual } from "node:crypto";
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -6,6 +7,15 @@ import { GraphQLError } from "graphql";
 import { createSchema, createYoga } from "graphql-yoga";
 import type { Resolvers } from "./generated/graphql.js";
 import { getCatalogFacets, loadCatalog, type Catalog, type CatalogSong } from "./catalog.js";
+import {
+  previewSongEntry,
+  SongEntryAlreadyExistsError,
+  writeSongEntry,
+} from "./song-entry/generator.js";
+import { lookupMetadata, MetadataLookupInputError, MetadataProviderError } from "./song-entry/metadata.js";
+import { isSlug } from "./song-entry/slug.js";
+import { validateSongEntryDetails, validateTrackMetadata, validationMessage } from "./song-entry/validation.js";
+import type { MetadataLookupInput, ValidationResult } from "./song-entry/types.js";
 
 const schemaPath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../schema.graphql");
 const schemaSource = await readFile(schemaPath, "utf8");
@@ -15,7 +25,11 @@ if (!Number.isInteger(port) || port < 1 || port > 65_535) {
 }
 
 const catalogDirectory = process.env.CATALOG_DIR ?? path.resolve(process.cwd(), "music");
-const catalog = await loadCatalog(catalogDirectory);
+const repositoryRoot = path.resolve(process.env.REPOSITORY_ROOT ?? path.resolve(catalogDirectory, ".."));
+if (process.env.SONG_ENTRY_WRITE_TOKEN && Buffer.byteLength(process.env.SONG_ENTRY_WRITE_TOKEN) < 32) {
+  throw new Error("SONG_ENTRY_WRITE_TOKEN must contain at least 32 bytes.");
+}
+let catalog = await loadCatalog(catalogDirectory);
 if (catalog.songs.length === 0) {
   throw new Error(`No valid catalog entries were found in ${catalogDirectory}`);
 }
@@ -29,13 +43,60 @@ function matchesFilter(value: string, filter: string | null | undefined): boolea
 
 function findSong(catalog: Catalog, slug: string): CatalogSong | null {
   const segments = slug.split("/");
-  if (segments.length !== 3 || !segments.every((segment) => /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(segment))) {
+  if (segments.length !== 3 || !segments.every(isSlug)) {
     return null;
   }
   return catalog.songs.find((song) => song.id === segments.join("/")) ?? null;
 }
 
-const resolvers: Resolvers = {
+interface GraphQLContext {
+  request: Request;
+}
+
+function requireValid<T>(result: ValidationResult<T>): T {
+  if (!result.ok) {
+    throw new GraphQLError(validationMessage(result.issues), {
+      extensions: { code: "BAD_USER_INPUT", validationIssues: result.issues },
+    });
+  }
+  return result.value;
+}
+
+function lookupInput(input: {
+  url?: string | null;
+  title?: string | null;
+  artist?: string | null;
+}): MetadataLookupInput {
+  return {
+    ...(input.url !== null && input.url !== undefined ? { url: input.url } : {}),
+    ...(input.title !== null && input.title !== undefined ? { title: input.title } : {}),
+    ...(input.artist !== null && input.artist !== undefined ? { artist: input.artist } : {}),
+  };
+}
+
+function hasWriteAuthorization(request: Request): boolean {
+  const configuredToken = process.env.SONG_ENTRY_WRITE_TOKEN;
+  if (!configuredToken) return false;
+  const authorization = request.headers.get("authorization") ?? "";
+  const suppliedToken = authorization.startsWith("Bearer ") ? authorization.slice(7) : "";
+  const expected = Buffer.from(configuredToken);
+  const supplied = Buffer.from(suppliedToken);
+  return expected.length === supplied.length && timingSafeEqual(expected, supplied);
+}
+
+function graphQLError(error: unknown): GraphQLError {
+  if (error instanceof GraphQLError) return error;
+  const message = error instanceof Error ? error.message : String(error);
+  if (error instanceof SongEntryAlreadyExistsError) {
+    return new GraphQLError(message, { extensions: { code: "CONFLICT" } });
+  }
+  if (error instanceof MetadataProviderError) {
+    return new GraphQLError(message, { extensions: { code: "UPSTREAM_METADATA_ERROR" } });
+  }
+  return new GraphQLError(message, { extensions: { code: "INTERNAL_SERVER_ERROR" } });
+}
+
+const resolvers: Resolvers<GraphQLContext> = {
   Query: {
     catalog: () => getCatalogFacets(catalog),
     songs: (_parent, args) => {
@@ -78,6 +139,54 @@ const resolvers: Resolvers = {
       if (!song) return null;
       return catalog.reports.get(args.slug) ?? null;
     },
+    metadataLookup: async (_parent, { input }) => {
+      try {
+        return await lookupMetadata(lookupInput(input));
+      } catch (error) {
+        if (error instanceof MetadataLookupInputError) {
+          throw new GraphQLError(error.message, { extensions: { code: "BAD_USER_INPUT" } });
+        }
+        throw graphQLError(error);
+      }
+    },
+    songEntryPreview: async (_parent, { input }) => {
+      const metadata = requireValid(validateTrackMetadata(input.metadata));
+      const details = requireValid(validateSongEntryDetails(input.details));
+      try {
+        return await previewSongEntry(repositoryRoot, metadata, details);
+      } catch (error) {
+        throw graphQLError(error);
+      }
+    },
+  },
+  Mutation: {
+    generateSongEntry: async (_parent, { input, confirm }, context) => {
+      if (!process.env.SONG_ENTRY_WRITE_TOKEN) {
+        throw new GraphQLError("Song entry generation is disabled; configure SONG_ENTRY_WRITE_TOKEN to enable it.", {
+          extensions: { code: "FORBIDDEN" },
+        });
+      }
+      if (!hasWriteAuthorization(context.request)) {
+        throw new GraphQLError("A valid bearer token is required to generate song entries.", {
+          extensions: { code: "FORBIDDEN" },
+        });
+      }
+      if (!confirm) {
+        throw new GraphQLError("Confirm the reviewed preview before generating a song entry.", {
+          extensions: { code: "BAD_USER_INPUT" },
+        });
+      }
+
+      const metadata = requireValid(validateTrackMetadata(input.metadata));
+      const details = requireValid(validateSongEntryDetails(input.details));
+      try {
+        const result = await writeSongEntry(repositoryRoot, metadata, details);
+        catalog = await loadCatalog(catalogDirectory);
+        return { path: result.path, created: true, catalogUpdated: result.catalogChanged };
+      } catch (error) {
+        throw graphQLError(error);
+      }
+    },
   },
   Song: {
     slug: (song) => song.id,
@@ -85,7 +194,7 @@ const resolvers: Resolvers = {
   },
 };
 
-const yoga = createYoga({
+const yoga = createYoga<GraphQLContext>({
   schema: createSchema({ typeDefs: schemaSource, resolvers }),
   graphqlEndpoint: "/graphql",
   landingPage: false,

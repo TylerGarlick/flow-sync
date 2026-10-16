@@ -16,6 +16,7 @@ RUN npm ci --omit=dev && npm cache clean --force
 COPY --from=build --chown=node:node /app/dist ./dist
 COPY --from=build --chown=node:node /app/schema.graphql ./schema.graphql
 COPY --from=build --chown=node:node /app/music ./music
+COPY --from=build --chown=node:node /app/docs/TEMPLATE.md ./docs/TEMPLATE.md
 USER node
 EXPOSE 4000
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
