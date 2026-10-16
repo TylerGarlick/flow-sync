@@ -5,7 +5,7 @@ genre: "Melodic Dubstep / Electronic"
 genre_slug: "dubstep-melodic"
 title: "Init"
 title_slug: "init"
-contributor: "@TylerGarlick""
+contributor: "@TylerGarlick"
 date_added: "2026-10-14"
 overall_flow_rating: 5
 time_to_flow_seconds: 60

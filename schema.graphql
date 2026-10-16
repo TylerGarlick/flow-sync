@@ -1,0 +1,71 @@
+type Query {
+  catalog: CatalogFacets!
+  songs(
+    search: String
+    artist: String
+    genre: String
+    limit: Int = 20
+    offset: Int = 0
+  ): SongPage!
+  song(slug: ID!): Song
+  report(slug: ID!): Report
+}
+
+type CatalogFacets {
+  artists: [CatalogFacet!]!
+  genres: [CatalogFacet!]!
+}
+
+type CatalogFacet {
+  name: String!
+  slug: String!
+  songCount: Int!
+}
+
+type SongPage {
+  songs: [Song!]!
+  totalCount: Int!
+  hasNextPage: Boolean!
+}
+
+type Song {
+  id: ID!
+  slug: ID!
+  artist: String!
+  artistSlug: String!
+  genre: String!
+  genreSlug: String!
+  title: String!
+  titleSlug: String!
+  dateAdded: String!
+  overallFlowRating: Int!
+  timeToFlowSeconds: Int!
+  bpm: String
+  key: String
+  description: String!
+  links: [SongLink!]!
+  triggers: [FlowTrigger!]!
+  reportCount: Int!
+  reports: [Report!]!
+}
+
+type SongLink {
+  label: String!
+  url: String!
+}
+
+type FlowTrigger {
+  timestamp: String!
+  title: String!
+  description: String!
+}
+
+type Report {
+  id: ID!
+  contributor: String!
+  dateAdded: String!
+  overallFlowRating: Int!
+  timeToFlowSeconds: Int!
+  markdown: String!
+  sourceFile: String!
+}

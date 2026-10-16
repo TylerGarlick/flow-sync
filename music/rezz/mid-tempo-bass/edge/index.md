@@ -5,7 +5,7 @@ genre: "Midtempo Bass / Industrial"
 genre_slug: "mid-tempo-bass"
 title: "Edge"
 title_slug: "edge"
-contributor: "@TylerGarlick""
+contributor: "@TylerGarlick"
 date_added: "2026-10-14"
 overall_flow_rating: 5
 time_to_flow_seconds: 40

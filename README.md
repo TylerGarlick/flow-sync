@@ -98,6 +98,16 @@ Using community metrics (`time_to_flow_seconds` and overall ratings), we regular
 - [ ] **FlowSync Web App:** A web interface allowing users to filter tracks by task type, BPM, or time-to-flow.
 - [ ] **Automated Playlist Generation:** GitHub Actions to automatically sync top-rated tracks to Spotify, Apple Music, and YouTube playlists.
 
+### GraphQL API
+
+The read-only GraphQL API serves the Markdown catalog. Start it locally with Docker Compose:
+
+```bash
+docker compose up --build
+```
+
+The API is available at [http://localhost:4000/graphql](http://localhost:4000/graphql). See the [GraphQL API guide](docs/graphql-api.md) for local development, queries, and catalog behavior.
+
 ---
 
 ## 💬 Community & Feedback
