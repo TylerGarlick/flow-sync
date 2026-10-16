@@ -5,7 +5,7 @@ genre: "Future Bass / Electronic"
 genre_slug: "future-bass"
 title: "Light"
 title_slug: "light"
-contributor: "@TylerGarlick""
+contributor: "@TylerGarlick"
 date_added: "2026-10-14"
 overall_flow_rating: 4
 time_to_flow_seconds: 40

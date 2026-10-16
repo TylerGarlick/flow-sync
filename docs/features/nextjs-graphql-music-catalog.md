@@ -1,10 +1,10 @@
 ---
-state: "draft"
+state: "in_progress"
 is_ready: false
 created_at: "2026-10-15"
 created_by: "@TylerGarlick"
-started_at: ""
-started_by: ""
+started_at: "2026-10-15"
+started_by: "@TylerGarlick"
 ---
 
 # 🌐 Next.js GraphQL Music Catalog

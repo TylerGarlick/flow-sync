@@ -5,7 +5,7 @@ genre: "Progressive House"
 genre_slug: "progressive-house"
 title: "Strobe"
 title_slug: "strobe"
-contributor: "@TylerGarlick""
+contributor: "@TylerGarlick"
 date_added: "2026-10-14"
 overall_flow_rating: 5
 time_to_flow_seconds: 180
