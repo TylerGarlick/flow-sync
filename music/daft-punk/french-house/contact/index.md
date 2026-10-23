@@ -5,7 +5,7 @@ genre: "French House / Electronic"
 genre_slug: "french-house"
 title: "Contact"
 title_slug: "contact"
-contributor: "@TylerGarlick""
+contributor: "@TylerGarlick"
 date_added: "2026-10-14"
 overall_flow_rating: 5
 time_to_flow_seconds: 90
