@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+import { getGenre, GENRE_TAXONOMY } from './taxonomy';
 
 const MUSIC_ROOT = path.resolve('/Users/tylergarlick/@Projects/flow-sync/music');
 
