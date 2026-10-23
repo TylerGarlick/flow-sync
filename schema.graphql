@@ -1,0 +1,146 @@
+type Query {
+  catalog: CatalogFacets!
+  songs(
+    search: String
+    artist: String
+    genre: String
+    limit: Int = 20
+    offset: Int = 0
+  ): SongPage!
+  song(slug: ID!): Song
+  report(slug: ID!): Report
+  metadataLookup(input: MetadataLookupInput!): MetadataLookupResult!
+  songEntryPreview(input: SongEntryInput!): SongEntryPreview!
+}
+
+type Mutation {
+  generateSongEntry(input: SongEntryInput!, confirm: Boolean!): SongEntryGenerationResult!
+}
+
+type CatalogFacets {
+  artists: [CatalogFacet!]!
+  genres: [CatalogFacet!]!
+}
+
+type CatalogFacet {
+  name: String!
+  slug: String!
+  songCount: Int!
+}
+
+type SongPage {
+  songs: [Song!]!
+  totalCount: Int!
+  hasNextPage: Boolean!
+}
+
+type Song {
+  id: ID!
+  slug: ID!
+  artist: String!
+  artistSlug: String!
+  genre: String!
+  genreSlug: String!
+  title: String!
+  titleSlug: String!
+  dateAdded: String!
+  overallFlowRating: Int!
+  timeToFlowSeconds: Int!
+  bpm: String
+  key: String
+  description: String!
+  links: [SongLink!]!
+  triggers: [FlowTrigger!]!
+  reportCount: Int!
+  reports: [Report!]!
+}
+
+type SongLink {
+  label: String!
+  url: String!
+}
+
+type FlowTrigger {
+  timestamp: String!
+  title: String!
+  description: String!
+}
+
+type Report {
+  id: ID!
+  contributor: String!
+  dateAdded: String!
+  overallFlowRating: Int!
+  timeToFlowSeconds: Int!
+  markdown: String!
+  sourceFile: String!
+}
+
+enum MetadataSource {
+  MUSICBRAINZ
+  APPLE_MUSIC
+  MANUAL
+}
+
+input MetadataLookupInput {
+  url: String
+  title: String
+  artist: String
+}
+
+type MetadataLookupResult {
+  candidates: [MetadataCandidate!]!
+  warnings: [String!]!
+}
+
+type MetadataCandidate {
+  title: String!
+  artist: String!
+  source: MetadataSource!
+  links: [SongLink!]!
+}
+
+input SongEntryInput {
+  metadata: SongMetadataInput!
+  details: SongEntryDetailsInput!
+}
+
+input SongMetadataInput {
+  title: String!
+  artist: String!
+  source: MetadataSource!
+  links: [SongLinkInput!]!
+}
+
+input SongLinkInput {
+  label: String!
+  url: String!
+}
+
+input SongEntryDetailsInput {
+  genre: String!
+  genreSlug: String
+  contributor: String!
+  dateAdded: String
+  flowRating: Int!
+  timeToFlowSeconds: Int!
+  flowAchieved: Boolean!
+  workContext: String!
+  environment: String!
+  description: String!
+  triggerPoints: [String!]!
+}
+
+type SongEntryPreview {
+  path: String!
+  markdown: String!
+  catalogMarkdown: String!
+  catalogChanged: Boolean!
+  alreadyExists: Boolean!
+}
+
+type SongEntryGenerationResult {
+  path: String!
+  created: Boolean!
+  catalogUpdated: Boolean!
+}

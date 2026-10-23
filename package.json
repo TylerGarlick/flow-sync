@@ -1,0 +1,31 @@
+{
+  "name": "flowsync-graphql",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "codegen": "graphql-codegen --config codegen.ts",
+    "build": "npm run codegen && tsc -p tsconfig.json",
+    "typecheck": "npm run codegen -- --check && tsc --noEmit -p tsconfig.json",
+    "start": "node dist/server.js",
+    "generate:song": "bun run scripts/src/cli.ts",
+    "test:unit": "bun test scripts/src",
+    "test:e2e:generator": "bun test scripts/e2e",
+    "test:e2e": "npm run build && node --test tests/e2e/*.test.js && bun run test:e2e:generator",
+    "test": "npm run test:unit && npm run test:e2e"
+  },
+  "dependencies": {
+    "graphql": "^16.11.0",
+    "graphql-yoga": "^5.16.0",
+    "yaml": "^2.8.0"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^7.4.6",
+    "@graphql-codegen/typed-document-node": "^7.2.0",
+    "@graphql-codegen/typescript": "^6.1.2",
+    "@graphql-codegen/typescript-operations": "^6.1.10",
+    "@graphql-codegen/typescript-resolvers": "^6.1.1",
+    "@types/node": "^22.15.30",
+    "typescript": "^5.8.3"
+  }
+}

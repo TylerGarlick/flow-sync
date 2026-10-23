@@ -1,0 +1,86 @@
+query Catalog {
+  catalog {
+    artists {
+      name
+      slug
+      songCount
+    }
+    genres {
+      name
+      slug
+      songCount
+    }
+  }
+}
+
+query Songs($search: String, $artist: String, $genre: String, $limit: Int, $offset: Int) {
+  songs(search: $search, artist: $artist, genre: $genre, limit: $limit, offset: $offset) {
+    totalCount
+    hasNextPage
+    songs {
+      id
+      title
+      artist
+      genre
+      overallFlowRating
+      timeToFlowSeconds
+    }
+  }
+}
+
+query SongDetail($slug: ID!) {
+  song(slug: $slug) {
+    id
+    title
+    artist
+    description
+    links {
+      label
+      url
+    }
+    triggers {
+      timestamp
+      title
+      description
+    }
+    reports {
+      id
+      contributor
+      overallFlowRating
+      timeToFlowSeconds
+    }
+  }
+}
+
+query SongMetadataLookup($input: MetadataLookupInput!) {
+  metadataLookup(input: $input) {
+    warnings
+    candidates {
+      title
+      artist
+      source
+      links {
+        label
+        url
+      }
+    }
+  }
+}
+
+query SongEntryPreview($input: SongEntryInput!) {
+  songEntryPreview(input: $input) {
+    path
+    markdown
+    catalogMarkdown
+    catalogChanged
+    alreadyExists
+  }
+}
+
+mutation GenerateSongEntry($input: SongEntryInput!, $confirm: Boolean!) {
+  generateSongEntry(input: $input, confirm: $confirm) {
+    path
+    created
+    catalogUpdated
+  }
+}

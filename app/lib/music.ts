@@ -48,13 +48,9 @@ export async function getAllSongs(): Promise<Song[]> {
           
           const ytMusicMatch = content.match(/\[Listen on YouTube Music\]\((.*?)\)/);
           const spotifyMatch = content.match(/\[Listen on Spotify\]\((.*?)\)/);
-          
-          const taxonomyGenre = getGenre(genre);
 
           songs.push({
             ...data,
-            genre: taxonomyGenre ? taxonomyGenre.name : (data.genre || genre),
-            genre_slug: genre,
             content,
             path: songPath,
             yt_music_url: ytMusicMatch ? ytMusicMatch[1] : undefined,
@@ -82,10 +78,6 @@ export async function searchSongs(query: string): Promise<Song[]> {
 export async function saveSong(song: Partial<Song>) {
   const { artist, artist_slug, genre, genre_slug, title, title_slug } = song;
   if (!artist_slug || !genre_slug || !title_slug) throw new Error('Missing slugs');
-  
-  if (!GENRE_TAXONOMY[genre_slug]) {
-    throw new Error(`Invalid genre slug: ${genre_slug}. Please use a valid genre from the taxonomy.`);
-  }
 
   const songDir = path.join(MUSIC_ROOT, artist_slug, genre_slug, title_slug);
   fs.mkdirSync(songDir, { recursive: true });
@@ -93,7 +85,7 @@ export async function saveSong(song: Partial<Song>) {
   const yaml = matter.stringify({
     artist: song.artist,
     artist_slug: song.artist_slug,
-    genre: song.genre || GENRE_TAXONOMY[genre_slug].name,
+    genre: song.genre,
     genre_slug: song.genre_slug,
     title: song.title,
     title_slug: song.title_slug,

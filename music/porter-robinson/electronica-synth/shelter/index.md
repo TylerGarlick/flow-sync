@@ -1,6 +1,6 @@
 ---
 artist: "Porter Robinson & Madeon"
-artist_slug: "porter-robinson-madeon"
+artist_slug: "porter-robinson"
 genre: "Electronica / Synth-Pop"
 genre_slug: "electronica-synth"
 title: "Shelter"
